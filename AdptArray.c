@@ -1,8 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "book.h"
-#include "Person.h"
 #include "AdptArray.h"
 
 // The definition of the ADT "object", it contains its size, its array as well as it elementary functions
@@ -38,7 +36,7 @@ void DeleteAdptArray(PAdptArray ADT)
 {
     if (ADT == NULL)
     {
-        return;
+        return; // no ADT to remove
     }
     PElement curr;
     for (int i = 0; i < ADT->size; i++)
@@ -46,7 +44,7 @@ void DeleteAdptArray(PAdptArray ADT)
         curr = (ADT->elementArr)[i];
         if (curr != NULL)
         {
-            ADT->deleter(curr);
+            ADT->deleter(curr); // using build-in deleter
         }
     }
     free(ADT->elementArr);
@@ -64,11 +62,11 @@ int CheckTypes(PAdptArray ADT, PElement newElement)
         curr = (ADT->elementArr)[i];
         if (curr != NULL)
         {
-            // The first appearance of a element is enough for us, because every entry of an element will meet this function:
+            // The first appearance of an element is enough for us, because every entry of a new element will meet this function:
             return (sizeof(curr) == newSize);
         }
     }
-    return 1;
+    return 1; // empty array case
     
 }
 
@@ -97,26 +95,30 @@ Result SetAdptArrayAt(PAdptArray ADT, int index, PElement newElement)
     }
     if ((ADT->elementArr)[index] != NULL)
     {
-        ADT->deleter((ADT->elementArr)[index]);
+        ADT->deleter((ADT->elementArr)[index]); // using build-in deleter
     }
-    (ADT->elementArr)[index] = ADT->copier(newElement);
+    (ADT->elementArr)[index] = ADT->copier(newElement); // puts a copy in the disired index using build-in copier
     return SUCCESS;
 }
 
 // this function returns a copy of the element in the desired index
 PElement GetAdptArrayAt(PAdptArray ADT, int index)
 {
-    if (ADT->size < index + 1 || (ADT->elementArr)[index] == NULL)
+    if (ADT->size < index + 1 || (ADT->elementArr)[index] == NULL) // out of bound / NULL cases
     {
         return NULL;
     }
-    PElement elememt = ADT->copier((ADT->elementArr)[index]);
+    PElement elememt = ADT->copier((ADT->elementArr)[index]); // using build-in copier
     return elememt;
 }
 
 // this function returns the size of the ADT
 int GetAdptArraySize(PAdptArray ADT)
 {
+    if (ADT == NULL)
+    {
+        return -1;
+    }
     return ADT->size;
 }
 
@@ -130,7 +132,7 @@ void PrintDB(PAdptArray ADT)
         curr = (ADT->elementArr)[i];
         if (curr != NULL)
         {
-            ADT->printer(curr); 
+            ADT->printer(curr); // using build-in printer
         }
     }
 }
