@@ -54,23 +54,23 @@ void DeleteAdptArray(PAdptArray ADT)
     free(ADT);
 }
 
-// inner function that checks if the new element's size equals to the curr ADT elements size
-int CheckTypes(PAdptArray ADT, PElement newElement)
-{
-    int newSize = sizeof(newElement);
-    int len = ADT->size;
-    PElement curr;
-    for (int i = 0; i < len; i++)
-    {
-        curr = (ADT->elementArr)[i];
-        if (curr != NULL)
-        {
-            // The first appearance of an element is enough for us, because every entry of a new element will meet this function:
-            return (sizeof(curr) == newSize);
-        }
-    }
-    return 1; // empty array case
-}
+// // inner function that checks if the new element's size equals to the curr ADT elements size
+// int CheckTypes(PAdptArray ADT, PElement newElement)
+// {
+//     int newSize = sizeof(newElement);
+//     int len = ADT->size;
+//     PElement curr;
+//     for (int i = 0; i < len; i++)
+//     {
+//         curr = (ADT->elementArr)[i];
+//         if (curr != NULL)
+//         {
+//             // The first appearance of an element is enough for us, because every entry of a new element will meet this function:
+//             return (sizeof(curr) == newSize);
+//         }
+//     }
+//     return 1; // empty array case
+// }
 
 // this function puts a copy of desired element in the desired index
 Result SetAdptArrayAt(PAdptArray ADT, int index, PElement newElement)
@@ -79,10 +79,10 @@ Result SetAdptArrayAt(PAdptArray ADT, int index, PElement newElement)
     {
         return FAIL;
     }
-        if (CheckTypes(ADT, newElement) == 0) // if the new element's type doesnt fit the curr type 
-    {
-        return FAIL;
-    }
+    //     if (CheckTypes(ADT, newElement) == 0) // if the new element's type doesnt fit the curr type 
+    // {
+    //     return FAIL;
+    // }
     if (index + 1 > ADT->size) // so we must extend the ADT
     {
         PElement* newArr = (PElement*)calloc((index+1), sizeof(PElement)); // create new arr with the updated size
