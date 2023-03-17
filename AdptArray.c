@@ -136,7 +136,7 @@ void PrintDB(PAdptArray ADT)
     for (int i = 0; i < len; i++)
     {
         curr = (ADT->elementArr)[i];
-        if (curr != NULL)
+        if (curr != NULL) // there is an element to print
         {
             ADT->printer(curr); // using build-in printer
         }
