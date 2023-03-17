@@ -1,3 +1,7 @@
+/**
+*     Author: 315599563
+*/
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -11,7 +15,7 @@ typedef struct AdptArray_
     COPY_FUNC copier;
     DEL_FUNC deleter;
     PRINT_FUNC printer;
-}AdptArray; // , *PAdptArray;
+} AdptArray; // , *PAdptArray;
 
 
 // this function creates an ADT, it gets 3 elemental functions according to the desired element
@@ -28,7 +32,6 @@ PAdptArray CreateAdptArray(COPY_FUNC copierFunc, DEL_FUNC deleterFunc,PRINT_FUNC
     ADT->printer = printerFunc;
     ADT->elementArr = NULL;
     return ADT;
-    
 }
 
 // this function deletes the entire ADT, as well as its elements
@@ -67,33 +70,32 @@ int CheckTypes(PAdptArray ADT, PElement newElement)
         }
     }
     return 1; // empty array case
-    
 }
 
-// this function puts a copy of desired element in the desired index (must get a suitable element, otherwise - 0) 
+// this function puts a copy of desired element in the desired index
 Result SetAdptArrayAt(PAdptArray ADT, int index, PElement newElement)
 {
-    if (ADT == NULL)
+    if (ADT == NULL || index < 0)
     {
         return FAIL;
     }
-    if (CheckTypes(ADT, newElement) == 0) // if the new element's type doesnt fit the curr type 
+        if (CheckTypes(ADT, newElement) == 0) // if the new element's type doesnt fit the curr type 
     {
         return FAIL;
     }
-    if (index + 1 > ADT->size) // so we need to extend the ADT
+    if (index + 1 > ADT->size) // so we must extend the ADT
     {
         PElement* newArr = (PElement*)calloc((index+1), sizeof(PElement)); // create new arr with the updated size
         if (newArr == NULL)
         {
             return FAIL;
         }
-        memcpy(newArr, ADT->elementArr, (ADT->size)*sizeof(PElement)); // copy the content of the old arr to new arr
+        memcpy(newArr, ADT->elementArr, GetAdptArraySize(ADT)*sizeof(PElement)); // copy the content of the old arr to new arr
         free(ADT->elementArr);
         ADT->elementArr = newArr; // update the ADT's array to the extended array
         ADT->size = index + 1; // update the size of the new ADT
     }
-    if ((ADT->elementArr)[index] != NULL)
+    if ((ADT->elementArr)[index] != NULL) // when the index is not NULL we must free the prev element
     {
         ADT->deleter((ADT->elementArr)[index]); // using build-in deleter
     }
@@ -104,7 +106,7 @@ Result SetAdptArrayAt(PAdptArray ADT, int index, PElement newElement)
 // this function returns a copy of the element in the desired index
 PElement GetAdptArrayAt(PAdptArray ADT, int index)
 {
-    if (ADT->size < index + 1 || (ADT->elementArr)[index] == NULL) // out of bound / NULL cases
+    if (ADT == NULL || GetAdptArraySize(ADT) < index + 1 || (ADT->elementArr)[index] == NULL) // out of bound / NULL cases
     {
         return NULL;
     }
@@ -125,6 +127,10 @@ int GetAdptArraySize(PAdptArray ADT)
 // this function runs a loop on each element in the ADT and prints it (if its not NULL)
 void PrintDB(PAdptArray ADT)
 {
+    if (ADT == NULL)
+    {
+        return; // no DB to print
+    }
     int len = ADT->size;
     PElement curr;
     for (int i = 0; i < len; i++)
